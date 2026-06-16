@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace i2f.Controllers
 {
+    //hello ali
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
