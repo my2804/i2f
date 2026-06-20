@@ -1,8 +1,91 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿
+    @{ 
+    ViewData["Title"] = "ImageToPDF"; 
+    Layout = null; 
+} 
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+  <meta charset="UTF-8" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
+  <title>ImageToPDF</title> 
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<link rel="stylesheet " href="~/css/site.css" />
+  <script src="~/js/site.js"><</script>
+</head> 
+<body> 
+ 
+  <nav class="navbar"> 
+    <a class="logo" href="#"> 
+      <div class="logo-icon"><i class="ti ti-file-type-pdf"></i></div> 
+      ImageToPDF 
+    </a> 
+    <span class="nav-hint">free &amp; instant converter</span> 
+  </nav> 
+ 
+  <div class="page"> 
+ 
+    
+    <div class="card"> 
+      <p class="section-label">1 — Upload images</p> 
+      <div class="dropzone" id="dropzone"> 
+        <i class="ti ti-cloud-upload dropzone-icon"></i> 
+        <p class="dropzone-title">Drop images here or click to browse</p> 
+        <p class="dropzone-sub">JPG, PNG, WEBP &mdash; up to 10 files, 5 MB each</p> 
+      
+        <input type="file" id="file-input" name="images" accept="image/jpeg,image/png,image/webp" multiple hidden /> 
+      </div> 
+      <p class="error-msg" id="error-msg"></p> 
+    </div> 
+ 
+    <div class="card" id="preview-card" style="display:none;"> 
+      <p class="section-label">2 — Preview &amp; reorder</p> 
+      <div class="thumb-grid" id="thumb-grid"> 
+        <div class="thumb thumb-add" id="add-more"> 
+          <i class="ti ti-plus thumb-icon"></i> 
+          <span class="thumb-name">add more</span> 
+        </div> 
+      </div> 
+    </div> 
+ 
+ 
+    <div class="card" id="options-card" style="display:none;"> 
+      <p class="section-label">3 — Options</p> 
+      <div class="options-row"> 
+        <span class="options-label">Page orientation</span> 
+        <div class="seg"> 
+          <button type="button" class="seg-btn active" data-val="portrait">Portrait</button> 
+          <button type="button" class="seg-btn" data-val="landscape">Landscape</button> 
+        </div> 
+      </div> 
+    </div> 
+ 
+   
+    <div class="card" id="convert-card" style="display:none;"> 
+    
+      <button type="button" class="btn-primary" id="convert-btn"> 
+        <i class="ti ti-file-export"></i> 
+        Convert to PDF 
+      </button> 
+ 
+      <div class="progress-wrap" id="progress-wrap"> 
+        <div class="progress-bar"> 
+          <div class="progress-fill" id="progress-fill"></div> 
+        </div> 
+        <p class="progress-label" id="progress-label">Converting&hellip;</p> 
+      </div> 
+ 
+      <div class="download-banner" id="download-banner"> 
+        <i class="ti ti-circle-check"></i> 
+        <span>Your PDF is ready.</span> 
+        <a class="btn-download" id="download-link" href="#" download="output.pdf">
+            <i class="ti ti-download"></i> Download 
+        </a> 
+      </div> 
+    </div> 
+ 
+  </div> 
+</body>
+</html>
+@{
+}
