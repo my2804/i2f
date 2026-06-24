@@ -1,10 +1,16 @@
+using i2f.Services.ImageToPDF.Services;
+
 namespace i2f
 {
     public class Program
     {
         public static void Main(string[] args)
         {
+
             var builder = WebApplication.CreateBuilder(args);
+            builder.Services.AddScoped<ImageValidatorService>();
+            builder.Services.AddScoped<TempFileService>();
+            builder.Services.AddScoped<PdfGeneratorService>();
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
