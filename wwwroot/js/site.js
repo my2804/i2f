@@ -83,13 +83,7 @@ function addThumb(file, idx) {
         files[idx] = null;
         URL.revokeObjectURL(img.src);
         div.remove();
-        if (files.filter(Boolean).length === 0) {
-            previewCard.style.display = 'none';
-            optionsCard.style.display = 'none';
-            convertCard.style.display = 'none';
-            downloadBanner.classList.remove('visible');
-            files = [];
-        }
+     
     });
 
     div.appendChild(img);
@@ -105,28 +99,60 @@ function addThumb(file, idx) {
         });
     });
 
-    // Convert — MOCKED (replace with real fetch when backend is ready)
-    convertBtn.addEventListener('click', () => {
+    convertBtn.addEventListener('click', async () => {
         const active = files.filter(Boolean);
         if (active.length === 0) return;
 
+        // Step 1 — Upload images
         convertBtn.disabled = true;
         downloadBanner.classList.remove('visible');
         progressWrap.classList.add('visible');
-        progressFill.style.width = '0%';
+        progressFill.style.width = '20%';
+        progressLabel.textContent = 'Uploading images...';
 
-        let pct = 0;
-        const interval = setInterval(() => {
-            pct += Math.random() * 20;
-            if (pct >= 100) {
-                pct = 100;
-                clearInterval(interval);
+        try {
+            const formData = new FormData();
+            active.forEach(f => formData.append('images', f));
+
+            const uploadRes = await fetch('/Pdf/Upload', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!uploadRes.ok) throw new Error('Upload failed');
+            const uploadData = await uploadRes.json();
+
+            progressFill.style.width = '60%';
+            progressLabel.textContent = 'Generating PDF...';
+
+            // Step 2 — Convert
+            const convertRes = await fetch('/Pdf/Convert', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    sessionId: uploadData.sessionId,
+                    images: uploadData.images,
+                    options: { orientation }
+                })
+            });
+
+            if (!convertRes.ok) throw new Error('Conversion failed');
+
+            progressFill.style.width = '100%';
+            progressLabel.textContent = 'Done!';
+
+            // Step 3 — Set download link
+            setTimeout(() => {
                 progressWrap.classList.remove('visible');
                 downloadBanner.classList.add('visible');
+                downloadLink.href = '/Pdf/Download?sessionId=' + uploadData.sessionId;
                 convertBtn.disabled = false;
-                // TODO: downloadLink.href = '/Pdf/Download?sessionId=' + sessionId;
-            }
-            progressFill.style.width = pct + '%';
-            progressLabel.textContent = 'Converting ' + active.length + ' image' + (active.length > 1 ? 's' : '') + '\u2026 ' + Math.round(pct) + '%';
-        }, 180);
-    });
+            }, 400);
+
+        } catch (err) {
+            progressWrap.classList.remove('visible');
+            showError('Something went wrong: ' + err.message);
+            convertBtn.disabled = false;
+        }
+    })
+}
