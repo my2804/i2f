@@ -30,7 +30,7 @@ namespace i2f.Models
 
         public DateTime? UpdatedAt { get; set; }
 
-        // Navigation property
+       
         public ApplicationUser? User { get; set; }
     }
 }

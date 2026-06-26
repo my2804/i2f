@@ -19,11 +19,11 @@ namespace i2f.Controllers
             _signInManager = signInManager;
         }
 
-        // GET: /Account/Register
+      
         [HttpGet]
         public IActionResult Register() => View();
 
-        // POST: /Account/Register
+       
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
@@ -44,11 +44,11 @@ namespace i2f.Controllers
             return View(model);
         }
 
-        // GET: /Account/Login
+     
         [HttpGet]
         public IActionResult Login() => View();
 
-        // POST: /Account/Login
+        
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
@@ -64,7 +64,6 @@ namespace i2f.Controllers
             return View(model);
         }
 
-        // POST: /Account/Logout
         [HttpPost]
         public async Task<IActionResult> Logout()
         {

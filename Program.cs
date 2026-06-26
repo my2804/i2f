@@ -13,11 +13,11 @@ namespace i2f
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Database
+            
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            // Identity
+            
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.Password.RequireDigit = true;
@@ -28,7 +28,7 @@ namespace i2f
             .AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
 
-            // Auth cookie
+           
             builder.Services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = "/Account/Login";
@@ -36,7 +36,7 @@ namespace i2f
                 options.ExpireTimeSpan = TimeSpan.FromHours(8);
             });
 
-            // App services
+           
             builder.Services.AddScoped<ImageValidatorService>();
             builder.Services.AddScoped<TempFileService>();
             builder.Services.AddScoped<PdfGeneratorService>();
@@ -56,7 +56,7 @@ namespace i2f
             app.UseStaticFiles();
             app.UseRouting();
 
-            app.UseAuthentication(); // must be before UseAuthorization
+            app.UseAuthentication(); 
             app.UseAuthorization();
 
           app.MapControllerRoute(

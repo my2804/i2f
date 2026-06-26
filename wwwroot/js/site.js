@@ -1,7 +1,7 @@
 ﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
 // for details on configuring this project to bundle and minify static web assets.
 
-// Write your JavaScript code.
+
 const dropzone = document.getElementById('dropzone');
 const fileInput = document.getElementById('file-input');
 const thumbGrid = document.getElementById('thumb-grid');
@@ -27,10 +27,10 @@ const ALLOWED = ['image/jpeg', 'image/png', 'image/webp'];
 let files = [];
 let orientation = 'portrait';
 
-// Open file picker on dropzone click 
+
 dropzone.addEventListener('click', () => fileInput.click());
 
-// Drag events 
+
 dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('dragover'); });
 dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
 dropzone.addEventListener('drop', e => {
@@ -101,7 +101,7 @@ function addThumb(file, idx) {
     div.appendChild(del);
     thumbGrid.insertBefore(div, addMore);
 
-    // Orientation toggle
+  
     document.querySelectorAll('.seg-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             document.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));

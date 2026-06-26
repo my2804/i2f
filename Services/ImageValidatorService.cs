@@ -5,7 +5,7 @@ namespace i2f.Services.ImageToPDF.Services
     public class ImageValidatorService
     {
         private readonly string[] _allowedTypes = { "image/jpeg", "image/png", "image/webp" };
-        private readonly long _maxSizeBytes = 5 * 1024 * 1024; // 5 MB
+        private readonly long _maxSizeBytes = 5 * 1024 * 1024;
         private const int MaxCount = 10;
 
         public ValidationResult ValidateAll(List<IFormFile> files)

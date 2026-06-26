@@ -36,7 +36,7 @@
                     using var gfx = XGraphics.FromPdfPage(page);
                     using var image = XImage.FromFile(entry.TempFilePath);
 
-                    // Scale image to fit page while keeping aspect ratio
+                   
                     double scaleX = page.Width.Point / image.PixelWidth;
                     double scaleY = page.Height.Point / image.PixelHeight;
                     double scale = Math.Min(scaleX, scaleY);
