@@ -18,24 +18,31 @@
         }
 
         .pdf-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
+            background: var(--washi);
+            border: 1px solid var(--stone-1);
             border-radius: var(--radius-lg);
             padding: 20px;
             display: flex;
             flex-direction: column;
             gap: 10px;
+            transition: box-shadow .2s;
         }
+
+            .pdf-card:hover {
+                box-shadow: 0 4px 16px rgba(26,26,46,0.09);
+            }
 
         .pdf-card-title {
             font-size: 15px;
             font-weight: 600;
-            color: var(--text-main);
+            color: var(--ink);
+            font-family: system-ui, sans-serif;
         }
 
         .pdf-card-meta {
             font-size: 12px;
-            color: var(--text-muted);
+            color: var(--stone-3);
+            font-family: system-ui, sans-serif;
         }
 
         .pdf-card-actions {
@@ -48,26 +55,29 @@
         .btn-sm {
             padding: 6px 14px;
             font-size: 12px;
-            font-weight: 500;
+            font-weight: 400;
             border-radius: var(--radius-sm);
-            border: 1px solid var(--border);
+            border: 1px solid var(--stone-1);
             cursor: pointer;
-            background: var(--surface);
-            color: var(--text-main);
+            background: var(--ivory);
+            color: var(--ink);
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 4px;
             transition: background .12s;
+            font-family: system-ui, sans-serif;
+            letter-spacing: 0.04em;
         }
 
             .btn-sm:hover {
-                background: var(--slate-100);
+                background: var(--stone-1);
             }
 
             .btn-sm.danger {
                 color: #dc2626;
                 border-color: #fca5a5;
+                background: transparent;
             }
 
                 .btn-sm.danger:hover {
@@ -75,13 +85,13 @@
                 }
 
             .btn-sm.primary {
-                background: var(--accent);
+                background: var(--rust);
                 color: #fff;
-                border-color: var(--accent);
+                border-color: var(--rust);
             }
 
                 .btn-sm.primary:hover {
-                    background: var(--accent-hover);
+                    background: var(--rust-dk);
                 }
 
         .search-bar {
@@ -93,66 +103,71 @@
             .search-bar input {
                 flex: 1;
                 padding: 10px 14px;
-                border: 1px solid var(--border);
+                border: 1px solid var(--stone-1);
                 border-radius: var(--radius-md);
                 font-size: 14px;
-                color: var(--text-main);
+                color: var(--ink);
                 outline: none;
-                background: var(--surface);
+                background: var(--ivory);
+                font-family: system-ui, sans-serif;
             }
 
                 .search-bar input:focus {
-                    border-color: var(--accent);
+                    border-color: var(--rust);
                 }
 
         .empty-state {
             text-align: center;
             padding: 60px 24px;
-            color: var(--text-muted);
+            color: var(--stone-3);
+            font-family: system-ui, sans-serif;
         }
 
             .empty-state i {
                 font-size: 48px;
                 display: block;
                 margin-bottom: 12px;
+                color: var(--stone-2);
             }
 
         .rename-input {
             width: 100%;
             padding: 6px 10px;
-            border: 1px solid var(--border);
+            border: 1px solid var(--stone-1);
             border-radius: var(--radius-sm);
             font-size: 14px;
-            color: var(--text-main);
+            color: var(--ink);
             outline: none;
-            background: var(--surface);
+            background: var(--ivory);
             box-sizing: border-box;
+            font-family: system-ui, sans-serif;
         }
 
             .rename-input:focus {
-                border-color: var(--accent);
+                border-color: var(--rust);
             }
     </style>
 </head>
 <body>
     <nav class="navbar">
         <div style="display:flex;align-items:center;gap:16px;">
-            <a href="/Pdf/Index" style="font-size:13px;color:var(--text-muted);text-decoration:none;">Convert</a>
-            <a href="/Pdf/MyPdfs" style="font-size:13px;color:var(--accent);font-weight:600;text-decoration:none;">My PDFs</a>
+            <a href="/Home/Index" style="font-size:13px;color:var(--stone-3);text-decoration:none;">Convert</a>
+            <a href="/Pdf/MyPdfs" style="font-size:13px;color:var(--rust);font-weight:600;text-decoration:none;">My PDFs</a>
             <form asp-action="Logout" asp-controller="Account" method="post" style="margin:0;">
-                <button type="submit" style="background:none;border:none;cursor:pointer;font-size:13px;color:var(--text-muted);">Log out</button>
+                <button type="submit" style="background:none;border:none;cursor:pointer;font-size:13px;color:var(--stone-3);">Log out</button>
             </form>
         </div>
-        <a class="logo" href="/Pdf/Index">
+        <a class="logo" href="/Home/Index">
             <div class="logo-icon"><i class="ti ti-file-type-pdf"></i></div>
             ImageToPDF
         </a>
         <span class="nav-hint">free &amp; instant converter</span>
     </nav>
 
-    <div class="page">
+    <div class="page" style="max-width:860px;">
         <div class="card">
             <p class="section-label">My PDFs</p>
+
             <form method="get" asp-action="MyPdfs" asp-controller="Pdf" class="search-bar">
                 <input type="text" name="search" value="@ViewBag.Search" placeholder="Search by title..." />
                 <button type="submit" class="btn-sm primary">Search</button>
@@ -167,7 +182,7 @@
                 <div class="empty-state">
                     <i class="ti ti-files"></i>
                     <p>No saved PDFs yet.</p>
-                    <a href="/Pdf/Index" style="color:var(--accent);font-size:13px;">Convert your first one →</a>
+                    <a href="/Pdf" style="color:var(--rust);font-size:13px;">Convert your first one →</a>
                 </div>
             }
             else
@@ -177,7 +192,7 @@
                     {
                         <div class="pdf-card">
                             <div style="display:flex;align-items:center;gap:10px;">
-                                <i class="ti ti-file-type-pdf" style="font-size:28px;color:var(--accent);"></i>
+                                <i class="ti ti-file-type-pdf" style="font-size:28px;color:var(--rust);"></i>
                                 <div>
                                     <p class="pdf-card-title">@pdf.Title</p>
                                     <p class="pdf-card-meta">
@@ -188,6 +203,7 @@
                                     </p>
                                 </div>
                             </div>
+
                             <form asp-action="Rename" asp-controller="Pdf" method="post"
                                   style="display:flex;gap:6px;">
                                 <input type="hidden" name="id" value="@pdf.Id" />
@@ -195,6 +211,7 @@
                                        value="@pdf.Title" placeholder="New title..." />
                                 <button type="submit" class="btn-sm primary">Rename</button>
                             </form>
+
                             <div class="pdf-card-actions">
                                 <a href="/Pdf/DownloadSaved?id=@pdf.Id" class="btn-sm primary">
                                     <i class="ti ti-download"></i> Download
