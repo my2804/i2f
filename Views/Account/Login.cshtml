@@ -7,78 +7,39 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login — i2f</title>
-    <link rel="stylesheet" href="~/css/imagetopdf.css" />
-    <link rel="stylesheet" href="~/css/imagetopdf.css" />
-    <style>
-        input[type="email"],
-        input[type="password"],
-        input[type="text"] {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            font-size: 14px;
-            font-family: system-ui, sans-serif;
-            color: #1e293b;
-            background: #ffffff;
-            outline: none;
-            box-sizing: border-box;
-            margin-bottom: 4px;
-        }
-
-            input[type="email"]:focus,
-            input[type="password"]:focus {
-                border-color: #4f46e5;
-            }
-
-        label {
-            font-size: 13px;
-            color: #64748b;
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        .field {
-            margin-bottom: 14px;
-        }
-    </style>
+    <title>Login — ImageToPDF</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@@tabler/icons-webfont@latest/tabler-icons.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
     <nav class="navbar">
         <a class="logo" href="/">
-            <div class="logo-icon">📄</div>
+            <div class="logo-icon"><i class="ti ti-file-type-pdf"></i></div>
             ImageToPDF
         </a>
+        <span class="nav-hint">free &amp; instant converter</span>
     </nav>
-
     <div class="page" style="max-width:420px;">
         <div class="card">
             <p class="section-label">Log in</p>
-
             <form asp-action="Login" asp-controller="Account" method="post">
                 <div asp-validation-summary="All" style="color:#dc2626;font-size:13px;margin-bottom:12px;"></div>
-
-                <div class ="field" style="margin-bottom:14px;">
+                <div style="margin-bottom:14px;">
                     <label style="font-size:13px;color:var(--text-muted);display:block;margin-bottom:4px;">Email</label>
                     <input asp-for="Email" type="email" placeholder="you@example.com"
-                           style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:14px;outline:none;" />
+                           style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:14px;outline:none;box-sizing:border-box;background:var(--surface);color:var(--text-main);" />
                 </div>
-
-                <div class="field"  style="margin-bottom:14px;">
+                <div style="margin-bottom:14px;">
                     <label style="font-size:13px;color:var(--text-muted);display:block;margin-bottom:4px;">Password</label>
                     <input asp-for="Password" type="password" placeholder="Password"
-                           style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:14px;outline:none;" />
+                           style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:14px;outline:none;box-sizing:border-box;background:var(--surface);color:var(--text-main);" />
                 </div>
-
-                <div class="field" style="margin-bottom:20px;display:flex;align-items:center;gap:8px;">
+                <div style="margin-bottom:20px;display:flex;align-items:center;gap:8px;">
                     <input asp-for="RememberMe" type="checkbox" id="rememberMe" />
                     <label for="rememberMe" style="font-size:13px;color:var(--text-muted);">Remember me</label>
                 </div>
-
                 <button type="submit" class="btn-primary">Log in</button>
             </form>
-
             <p style="text-align:center;margin-top:16px;font-size:13px;color:var(--text-muted);">
                 No account? <a href="/Account/Register" style="color:var(--accent);">Register</a>
             </p>

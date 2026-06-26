@@ -1,101 +1,98 @@
-﻿
-    @{ 
-    ViewData["Title"] = "ImageToPDF"; 
-    Layout = null; 
-} 
-<!DOCTYPE html> 
-<html lang="en"> 
-<head> 
-  <meta charset="UTF-8" /> 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
-  <title>ImageToPDF</title> 
-
-<link rel="stylesheet " href="~/css/site.css" />
-
+﻿@{
+    ViewData["Title"] = "ImageToPDF";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ImageToPDF</title>
+    <link rel="stylesheet" href="~/css/site.css" />
 </head>
+<body>
 
-<body> 
- 
-  <nav class="navbar">
-        <form asp-action="Logout" asp-controller="Account" method="post" style="margin:0;">
-            <button type="submit" class="nav-hint"
-                    style="background:none;border:none;cursor:pointer;color:var(--text-muted);">
-                Log out
+    <nav class="navbar">
+        <div style="display:flex;align-items:center;gap:16px;">
+            <a href="/Pdf/MyPdfs" style="font-size:13px;color:var(--text-muted);text-decoration:none;">My PDFs</a>
+            <form asp-action="Logout" asp-controller="Account" method="post" style="margin:0;">
+                <button type="submit" style="background:none;border:none;cursor:pointer;font-size:13px;color:var(--text-muted);">Log out</button>
+            </form>
+        </div>
+        <a class="logo" href="#">
+            <div class="logo-icon"><i class="ti ti-file-type-pdf"></i></div>
+            ImageToPDF
+        </a>
+        <span class="nav-hint">free &amp; instant converter</span>
+    </nav>
+
+    <div class="page">
+
+        <div class="card">
+            <p class="section-label">1 — Upload images</p>
+            <div class="dropzone" id="dropzone">
+                <i class="ti ti-cloud-upload dropzone-icon"></i>
+                <p class="dropzone-title">Drop images here or click to browse</p>
+                <p class="dropzone-sub">JPG, PNG, WEBP &mdash; up to 10 files, 5 MB each</p>
+                <input type="file" id="file-input" name="images" accept="image/jpeg,image/png,image/webp" multiple hidden />
+            </div>
+            <p class="error-msg" id="error-msg"></p>
+        </div>
+
+        <div class="card" id="preview-card">
+            <p class="section-label">2 — Preview &amp; reorder</p>
+            <div class="thumb-grid" id="thumb-grid">
+                <div class="thumb thumb-add" id="add-more">
+                    <i class="ti ti-plus thumb-icon"></i>
+                    <span class="thumb-name">add more</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" id="options-card">
+            <p class="section-label">3 — Options</p>
+            <div class="options-row">
+                <span class="options-label">Page orientation</span>
+                <div class="seg">
+                    <button type="button" class="seg-btn active" data-val="portrait">Portrait</button>
+                    <button type="button" class="seg-btn" data-val="landscape">Landscape</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" id="convert-card">
+            <button type="button" class="btn-primary" id="convert-btn">
+                <i class="ti ti-file-export"></i>
+                Convert to PDF
             </button>
-        </form>
 
-        <a class="logo" href="#"> 
-      <div class="logo-icon"><i class="ti ti-file-type-pdf"></i></div> 
-      ImageToPDF 
-    </a> 
-    <span class="nav-hint">free &amp; instant converter</span> 
-  </nav> 
- 
-  <div class="page"> 
- 
-    
-    <div class="card"> 
-      <p class="section-label">1 — Upload images</p> 
-      <div class="dropzone" id="dropzone"> 
-        <i class="ti ti-cloud-upload dropzone-icon"></i> 
-        <p class="dropzone-title">Drop images here or click to browse</p> 
-        <p class="dropzone-sub">JPG, PNG, WEBP &mdash; up to 10 files, 5 MB each</p> 
-      
-        <input type="file" id="file-input" name="images" accept="image/jpeg,image/png,image/webp" multiple hidden /> 
-      </div> 
-      <p class="error-msg" id="error-msg"></p> 
-    </div> 
- 
-    <div class="card" id="preview-card" > 
-      <p class="section-label">2 — Preview &amp; reorder</p> 
-      <div class="thumb-grid" id="thumb-grid"> 
-        <div class="thumb thumb-add" id="add-more"> 
-          <i class="ti ti-plus thumb-icon"></i> 
-          <span class="thumb-name">add more</span> 
-        </div> 
-      </div> 
-    </div> 
- 
- 
-    <div class="card" id="options-card"> 
-      <p class="section-label">3 — Options</p> 
-      <div class="options-row"> 
-        <span class="options-label">Page orientation</span> 
-        <div class="seg"> 
-          <button type="button" class="seg-btn active" data-val="portrait">Portrait</button> 
-          <button type="button" class="seg-btn" data-val="landscape">Landscape</button> 
-        </div> 
-      </div> 
-    </div> 
- 
-   
-    <div class="card" id="convert-card" > 
-    
-      <button type="button" class="btn-primary" id="convert-btn"> 
-        <i class="ti ti-file-export"></i> 
-        Convert to PDF 
-      </button>
+            <div class="progress-wrap" id="progress-wrap">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <p class="progress-label" id="progress-label">Converting&hellip;</p>
+            </div>
 
-     
-      <div class="progress-wrap" id="progress-wrap"> 
-        <div class="progress-bar"> 
-          <div class="progress-fill" id="progress-fill"></div> 
-        </div> 
-        <p class="progress-label" id="progress-label">Converting&hellip;</p> 
-      </div> 
- 
-      <div class="download-banner" id="download-banner"> 
-        <i class="ti ti-circle-check"></i> 
-        <span>Your PDF is ready.</span> 
-        <a class="btn-download" id="download-link" href="#" download="output.pdf">
-            <i class="ti ti-download"></i> Download 
-        </a> 
-      </div> 
-    </div> 
- 
-  </div> 
+            <div class="download-banner" id="download-banner">
+                <i class="ti ti-circle-check" style="font-size:22px;color:var(--accent);"></i>
+                <div style="flex:1;">
+                    <p style="margin:0;font-weight:600;">Your PDF is ready!</p>
+                </div>
+                <a class="btn-download" id="download-link" href="#">Download PDF</a>
+            </div>
+
+            <div class="download-banner" id="save-section" style="margin-top:10px;background:var(--slate-50);border-color:var(--slate-200);">
+                <i class="ti ti-bookmark" style="font-size:22px;color:var(--accent);"></i>
+                <div style="flex:1;">
+                    <input type="text" id="save-title" placeholder="Give your PDF a title..."
+                           style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;color:var(--text-main);background:var(--surface);outline:none;" />
+                </div>
+                <button class="btn-download" id="save-btn">Save to My PDFs</button>
+            </div>
+        </div>
+
+    </div>
+
     <script src="~/js/site.js"></script>
 </body>
 </html>
-@{
-}

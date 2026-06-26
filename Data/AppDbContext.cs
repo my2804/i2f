@@ -10,5 +10,6 @@ namespace i2f.Data
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         public DbSet<ImageEntry> ImageEntries { get; set; }
+        public DbSet<SavedPdf> SavedPdfs { get; set; }
     }
 }

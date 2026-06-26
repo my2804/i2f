@@ -16,6 +16,9 @@ const progressLabel = document.getElementById('progress-label');
 const downloadBanner = document.getElementById('download-banner');
 const downloadLink = document.getElementById('download-link');
 const errorMsg = document.getElementById('error-msg');
+const saveSection = document.getElementById('save-section');
+const saveTitleInput = document.getElementById('save-title');
+const saveBtn = document.getElementById('save-btn');
 
 const MAX_FILES = 10;
 const MAX_SIZE = 5 * 1024 * 1024; // 5 MB 
@@ -47,6 +50,15 @@ function showError(msg) {
     errorMsg.textContent = msg;
     errorMsg.classList.add('visible');
     setTimeout(() => errorMsg.classList.remove('visible'), 3000);
+}
+
+function onDone(sessionId, imageCount) {
+    progressWrap.classList.remove('visible');
+    downloadBanner.classList.add('visible');
+    downloadLink.href = '/Pdf/Download?sessionId=' + sessionId;
+    saveSection.classList.add('visible');
+    saveSection.dataset.sessionId = sessionId;
+    saveSection.dataset.pageCount = imageCount;
 }
 
 function handleFiles(newFiles) {
@@ -83,7 +95,6 @@ function addThumb(file, idx) {
         files[idx] = null;
         URL.revokeObjectURL(img.src);
         div.remove();
-     
     });
 
     div.appendChild(img);
@@ -98,61 +109,74 @@ function addThumb(file, idx) {
             orientation = btn.dataset.val;
         });
     });
-
-    convertBtn.addEventListener('click', async () => {
-        const active = files.filter(Boolean);
-        if (active.length === 0) return;
-
-        // Step 1 — Upload images
-        convertBtn.disabled = true;
-        downloadBanner.classList.remove('visible');
-        progressWrap.classList.add('visible');
-        progressFill.style.width = '20%';
-        progressLabel.textContent = 'Uploading images...';
-
-        try {
-            const formData = new FormData();
-            active.forEach(f => formData.append('images', f));
-
-            const uploadRes = await fetch('/Pdf/Upload', {
-                method: 'POST',
-                body: formData
-            });
-
-            if (!uploadRes.ok) throw new Error('Upload failed');
-            const uploadData = await uploadRes.json();
-
-            progressFill.style.width = '60%';
-            progressLabel.textContent = 'Generating PDF...';
-
-            // Step 2 — Convert
-            const convertRes = await fetch('/Pdf/Convert', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    sessionId: uploadData.sessionId,
-                    images: uploadData.images,
-                    options: { orientation }
-                })
-            });
-
-            if (!convertRes.ok) throw new Error('Conversion failed');
-
-            progressFill.style.width = '100%';
-            progressLabel.textContent = 'Done!';
-
-            // Step 3 — Set download link
-            setTimeout(() => {
-                progressWrap.classList.remove('visible');
-                downloadBanner.classList.add('visible');
-                downloadLink.href = '/Pdf/Download?sessionId=' + uploadData.sessionId;
-                convertBtn.disabled = false;
-            }, 400);
-
-        } catch (err) {
-            progressWrap.classList.remove('visible');
-            showError('Something went wrong: ' + err.message);
-            convertBtn.disabled = false;
-        }
-    })
 }
+
+convertBtn.addEventListener('click', async () => {
+    const active = files.filter(Boolean);
+    if (active.length === 0) return;
+    convertBtn.disabled = true;
+    downloadBanner.classList.remove('visible');
+    saveSection.classList.remove('visible');
+    progressWrap.classList.add('visible');
+    progressFill.style.width = '20%';
+    progressLabel.textContent = 'Uploading images...';
+    try {
+        const formData = new FormData();
+        active.forEach(f => formData.append('images', f));
+        const uploadRes = await fetch('/Pdf/Upload', {
+            method: 'POST',
+            body: formData
+        });
+        if (!uploadRes.ok) throw new Error('Upload failed');
+        const uploadData = await uploadRes.json();
+        progressFill.style.width = '60%';
+        progressLabel.textContent = 'Generating PDF...';
+        const convertRes = await fetch('/Pdf/Convert', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                sessionId: uploadData.sessionId,
+                images: uploadData.images,
+                options: { orientation }
+            })
+        });
+        if (!convertRes.ok) throw new Error('Conversion failed');
+        progressFill.style.width = '100%';
+        progressLabel.textContent = 'Done!';
+        setTimeout(() => {
+            onDone(uploadData.sessionId, active.length);
+            convertBtn.disabled = false;
+        }, 400);
+    } catch (err) {
+        progressWrap.classList.remove('visible');
+        showError('Something went wrong: ' + err.message);
+        convertBtn.disabled = false;
+    }
+});
+
+saveBtn.addEventListener('click', async () => {
+    const sessionId = saveSection.dataset.sessionId;
+    const pageCount = parseInt(saveSection.dataset.pageCount);
+    const title = saveTitleInput.value.trim() || 'My PDF';
+    saveBtn.disabled = true;
+    saveBtn.textContent = 'Saving...';
+    try {
+        const res = await fetch('/Pdf/SavePdf', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ sessionId, title, orientation, pageCount })
+        });
+        if (!res.ok) throw new Error('Save failed');
+        saveBtn.textContent = '✓ Saved!';
+        saveBtn.style.background = '#16a34a';
+        setTimeout(() => {
+            saveBtn.disabled = false;
+            saveBtn.textContent = 'Save to My PDFs';
+            saveBtn.style.background = '';
+        }, 2000);
+    } catch (err) {
+        showError('Could not save: ' + err.message);
+        saveBtn.disabled = false;
+        saveBtn.textContent = 'Save to My PDFs';
+    }
+});

@@ -40,6 +40,7 @@ namespace i2f
             builder.Services.AddScoped<ImageValidatorService>();
             builder.Services.AddScoped<TempFileService>();
             builder.Services.AddScoped<PdfGeneratorService>();
+            builder.Services.AddScoped<PdfManagementService>();
 
             builder.Services.AddControllersWithViews();
 

@@ -1,6 +1,9 @@
 ﻿html {
   font-size: 14px;
 }
+#save-section.visible {
+    display: flex !important;
+}
 
 @media (min-width: 768px) {
   html {
