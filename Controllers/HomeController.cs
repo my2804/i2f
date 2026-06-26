@@ -1,10 +1,12 @@
 using System.Diagnostics;
 using i2f.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace i2f.Controllers
 {
     //hello ali
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

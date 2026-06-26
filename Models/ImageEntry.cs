@@ -1,7 +1,10 @@
-﻿namespace i2f.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace i2f.Models
 {
     public class ImageEntry
     {
+        [Key]
         public string FileId { get; set; } = string.Empty;
         public string SessionId { get; set; } = string.Empty;
         public string FileName { get; set; } = string.Empty;

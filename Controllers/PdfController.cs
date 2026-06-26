@@ -1,15 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using i2f.Services;
-using i2f.Models;
-using i2f.Services.ImageToPDF.Services;
-using FluentValidation;
+﻿using FluentValidation;
 using FluentValidation.Results;
+using i2f.Models;
+using i2f.Services;
+using i2f.Services.ImageToPDF.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 namespace i2f.Controllers
 {
   
 
 namespace ImageToPDF.Controllers
     {
+        [Authorize]
         public class PdfController : Controller
         {
             private readonly ImageValidatorService _validator;

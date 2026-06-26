@@ -1,0 +1,89 @@
+﻿@model i2f.ViewModels.RegisterViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register — i2f</title>
+    <link rel="stylesheet" href="~/css/imagetopdf.css" />
+    <link rel="stylesheet" href="~/css/imagetopdf.css" />
+    <style>
+        input[type="email"],
+        input[type="password"],
+        input[type="text"] {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: system-ui, sans-serif;
+            color: #1e293b;
+            background: #ffffff;
+            outline: none;
+            box-sizing: border-box;
+            margin-bottom: 4px;
+        }
+
+            input[type="email"]:focus,
+            input[type="password"]:focus {
+                border-color: #4f46e5;
+            }
+
+        label {
+            font-size: 13px;
+            color: #64748b;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .field {
+            margin-bottom: 14px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a class="logo" href="/">
+            <div class="logo-icon">📄</div>
+            ImageToPDF
+        </a>
+    </nav>
+
+    <div class="page" style="max-width:420px;">
+        <div class="card">
+            <p class="section-label">Create account</p>
+
+            <form asp-action="Register" asp-controller="Account" method="post">
+                <div asp-validation-summary="All" style="color:#dc2626;font-size:13px;margin-bottom:12px;"></div>
+
+                <div class ="field" style="margin-bottom:14px;">
+                    <label style="font-size:13px;color:var(--text-muted);display:block;margin-bottom:4px;">Email</label>
+                    <input asp-for="Email" type="email" placeholder="you@example.com"
+                           style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:14px;outline:none;" />
+                </div>
+
+                <div class="field" style="margin-bottom:14px;">
+                    <label style="font-size:13px;color:var(--text-muted);display:block;margin-bottom:4px;">Password</label>
+                    <input asp-for="Password" type="password" placeholder="Min. 6 characters"
+                           style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:14px;outline:none;" />
+                </div>
+
+                <div class="field" style="margin-bottom:20px;">
+                    <label style="font-size:13px;color:var(--text-muted);display:block;margin-bottom:4px;">Confirm password</label>
+                    <input asp-for="ConfirmPassword" type="password" placeholder="Repeat password"
+                           style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:14px;outline:none;" />
+                </div>
+
+                <button type="submit" class="btn-primary">Create account</button>
+            </form>
+
+            <p style="text-align:center;margin-top:16px;font-size:13px;color:var(--text-muted);">
+                Already have an account? <a href="/Account/Login" style="color:var(--accent);">Log in</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

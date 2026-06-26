@@ -16,8 +16,15 @@
 
 <body> 
  
-  <nav class="navbar"> 
-    <a class="logo" href="#"> 
+  <nav class="navbar">
+        <form asp-action="Logout" asp-controller="Account" method="post" style="margin:0;">
+            <button type="submit" class="nav-hint"
+                    style="background:none;border:none;cursor:pointer;color:var(--text-muted);">
+                Log out
+            </button>
+        </form>
+
+        <a class="logo" href="#"> 
       <div class="logo-icon"><i class="ti ti-file-type-pdf"></i></div> 
       ImageToPDF 
     </a> 
@@ -67,8 +74,9 @@
       <button type="button" class="btn-primary" id="convert-btn"> 
         <i class="ti ti-file-export"></i> 
         Convert to PDF 
-      </button> 
- 
+      </button>
+
+     
       <div class="progress-wrap" id="progress-wrap"> 
         <div class="progress-bar"> 
           <div class="progress-fill" id="progress-fill"></div> 
